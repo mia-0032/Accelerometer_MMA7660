@@ -28,8 +28,7 @@
  * THE SOFTWARE.
  */
 
-#include <Arduino.h>
-#include <WireI2C.h>
+#include <Wio3GforArduino.h>
 #include "MMA7660.h"
 
 #define MMA7660TIMEOUT  500         // us
