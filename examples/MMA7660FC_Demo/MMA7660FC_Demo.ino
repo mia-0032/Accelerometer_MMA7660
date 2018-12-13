@@ -29,7 +29,7 @@ MMA7660 accelemeter;
 void setup()
 {
 	accelemeter.init();  
-	Serial.begin(9600);
+	SerialUSB.begin(9600);
 }
 void loop()
 {
@@ -39,22 +39,22 @@ void loop()
 	float ax,ay,az;
 	accelemeter.getXYZ(&x,&y,&z);
 	
-	Serial.print("x = ");
-    Serial.println(x); 
-    Serial.print("y = ");
-    Serial.println(y);   
-    Serial.print("z = ");
-    Serial.println(z);
+	SerialUSB.print("x = ");
+    SerialUSB.println(x); 
+    SerialUSB.print("y = ");
+    SerialUSB.println(y);   
+    SerialUSB.print("z = ");
+    SerialUSB.println(z);
 	
 	accelemeter.getAcceleration(&ax,&ay,&az);
-    Serial.println("accleration of X/Y/Z: ");
-	Serial.print(ax);
-	Serial.println(" g");
-	Serial.print(ay);
-	Serial.println(" g");
-	Serial.print(az);
-	Serial.println(" g");
-	Serial.println("*************");
+    SerialUSB.println("accleration of X/Y/Z: ");
+	SerialUSB.print(ax);
+	SerialUSB.println(" g");
+	SerialUSB.print(ay);
+	SerialUSB.println(" g");
+	SerialUSB.print(az);
+	SerialUSB.println(" g");
+	SerialUSB.println("*************");
 	delay(500);
 }
 

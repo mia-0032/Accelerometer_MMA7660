@@ -29,33 +29,33 @@
  */
 
 #include <Arduino.h>
-#include <Wire.h>
+#include <WireI2C.h>
 #include "MMA7660.h"
 
 #define MMA7660TIMEOUT  500         // us
 /*Function: Write a byte to the register of the MMA7660*/
 void MMA7660::write(uint8_t _register, uint8_t _data) {
-    Wire.begin();
-    Wire.beginTransmission(MMA7660_ADDR);
-    Wire.write(_register);
-    Wire.write(_data);
-    Wire.endTransmission();
+    WireI2C.begin();
+    WireI2C.beginTransmission(MMA7660_ADDR);
+    WireI2C.write(_register);
+    WireI2C.write(_data);
+    WireI2C.endTransmission();
 }
 
 /*Function: Read a byte from the regitster of the MMA7660*/
 uint8_t MMA7660::read(uint8_t _register) {
     uint8_t data_read;
-    Wire.begin();
-    Wire.beginTransmission(MMA7660_ADDR);
-    Wire.write(_register);
-    Wire.endTransmission();
-    Wire.beginTransmission(MMA7660_ADDR);
-    Wire.requestFrom(MMA7660_ADDR,1);
-    while(Wire.available())
+    WireI2C.begin();
+    WireI2C.beginTransmission(MMA7660_ADDR);
+    WireI2C.write(_register);
+    WireI2C.endTransmission();
+    WireI2C.beginTransmission(MMA7660_ADDR);
+    WireI2C.requestFrom(MMA7660_ADDR,1);
+    while(WireI2C.available())
     {
-        data_read = Wire.read();
+        data_read = WireI2C.read();
     }
-    Wire.endTransmission();
+    WireI2C.endTransmission();
     return data_read;
 }
 
@@ -129,20 +129,20 @@ START:
     unsigned char val[3];
     int count = 0;
     val[0] = val[1] = val[2] = 64;
-    while(Wire.available() > 0)
-    Wire.read();
+    while(WireI2C.available() > 0)
+    WireI2C.read();
 
-    Wire.requestFrom(MMA7660_ADDR,3);
+    WireI2C.requestFrom(MMA7660_ADDR,3);
 
     unsigned long timer_s = micros();
 
-    while(Wire.available())
+    while(WireI2C.available())
     {
         if(count < 3)
         {
             while ( val[count] > 63 )  // reload the damn thing it is bad
             {
-                val[count] = Wire.read();
+                val[count] = WireI2C.read();
 
                 if(micros()-timer_s > MMA7660TIMEOUT)
                 {
@@ -181,14 +181,14 @@ bool MMA7660::getAcceleration(MMA7660_ACC_DATA *data) {
         error = false;
         count = 0;
 
-        while(Wire.available() > 0) {
-            Wire.read();
+        while(WireI2C.available() > 0) {
+            WireI2C.read();
         }
 
-        Wire.requestFrom(MMA7660_ADDR, 3);
-        while(Wire.available()) {
+        WireI2C.requestFrom(MMA7660_ADDR, 3);
+        while(WireI2C.available()) {
             if (count < 3) {
-                val[count] = Wire.read();
+                val[count] = WireI2C.read();
                 if (0x40 & val[count] == 0x40) { // alert bit is set, data is garbage and we have to start over.
                     error = true;
                     break;
@@ -211,14 +211,14 @@ bool MMA7660::getAllData(MMA7660_DATA *data) {
     int count = 0;
     uint8_t val[11] = {0};
 
-    while (Wire.available() > 0) {
-        Wire.read();
+    while (WireI2C.available() > 0) {
+        WireI2C.read();
     }
 
-    Wire.requestFrom(MMA7660_ADDR, 11);
-    while (Wire.available()) {
+    WireI2C.requestFrom(MMA7660_ADDR, 11);
+    while (WireI2C.available()) {
         if (count < 11) {
-            val[count] = Wire.read();
+            val[count] = WireI2C.read();
         }
         count++;
     }
